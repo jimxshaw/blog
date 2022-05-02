@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset='UTF-8' />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <title>Jimmy Shaw - About</title>
+</head>
+
+<body>
+  <div class="content">
+    {{ template "header" . }}
+    <div class="container">
+      <div class="about">
+        <h1>About Me</h1>
+        I'm Jimmy. I’m a senior software engineer and technology enthusiast focused on Go.
+        I blog about code, culture, sports, what we’ve done and where we’re headed.
+
+        Find me on <a href="#">Github</a> and <a href="#">LinkIn</a>.
+
+        Disclaimer: The contents and opinions in this blog are my own. They do not represent my friends, colleagues and
+        employers' views.
+      </div>
+    </div>
+    {{ template "footer" . }}
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+
+</html>
