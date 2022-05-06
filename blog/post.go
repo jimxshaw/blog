@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"fmt"
 	"html/template"
+	"io"
 	"log"
 	"regexp"
 	"strings"
@@ -18,7 +19,7 @@ type Post struct {
 	Title       string
 	Description string
 	Date        time.Time
-	Tags        []string
+	Tags        map[string]struct{}
 	Url         string
 	Body        template.HTML
 }
@@ -45,6 +46,43 @@ func readBody(scanner *bufio.Scanner) []byte {
 		bfchroma.Style("vs"),
 	))))
 	return content
+}
+
+func newPost(file io.Reader) (Post, error) {
+	scanner := bufio.NewScanner(file)
+
+	readLines := func(parser string) string {
+		scanner.Scan()
+		return strings.TrimPrefix(scanner.Text(), parser)
+	}
+
+	title := readLines(titleParser)
+	description := readLines(descriptionParser)
+	date := readLines(dateParser)
+	tagsArray := strings.Split(readLines(tagsParser), ", ")
+	url := CreateUrl(title)
+	body := template.HTML(readBody(scanner))
+
+	const dateFormat = "2000-Jan-01"
+
+	parsedDate, err := time.Parse(dateFormat, date)
+	if err != nil {
+		return Post{}, nil
+	}
+
+	tagsMap := make(map[string]struct{})
+	for _, tag := range tagsArray {
+		tagsMap[tag] = struct{}{}
+	}
+
+	return Post{
+		Title:       title,
+		Description: description,
+		Date:        parsedDate,
+		Tags:        tagsMap,
+		Url:         url,
+		Body:        body,
+	}, nil
 }
 
 func CreateUrl(title string) string {
